@@ -29,7 +29,9 @@ ALLOWED_HOSTS = {
 GITHUB_OWNERS = {  # github.com links only to the tracked projects
     "bol-van", "hufrea", "waujito", "dilluti0n", "gvcoder09", "xvzc", "valdikss", "flowseal",
     "romanvht", "xtls", "sagernet", "apernet", "amnezia-vpn", "net4people", "daniellavrushin",
+    "runnin4ik", "william-aqn", "runetfreedom",
 }
+GITLAB_OWNERS = {"netwalker071778"}  # gitlab.com links only to these namespaces (chimera-project)
 
 
 def bad_links(text):
@@ -42,6 +44,9 @@ def bad_links(text):
             bad.append(url)
         elif host == "github.com":
             if owner not in GITHUB_OWNERS:
+                bad.append(url)
+        elif host == "gitlab.com":
+            if owner not in GITLAB_OWNERS:
                 bad.append(url)
         elif host not in ALLOWED_HOSTS:
             bad.append(url)
