@@ -25,6 +25,7 @@ LIMIT = 3900
 ALLOWED_HOSTS = {
     "habr.com", "gfw.report", "ooni.org", "explorer.ooni.org", "censoredplanet.org",
     "usenix.org", "www.usenix.org", "petsymposium.org", "arxiv.org", "byebyedpi.xyz",
+    "ntc.party",  # forum threads summarized from dpi-feeds/ntc.jsonl
 }
 GITHUB_OWNERS = {  # github.com links only to the tracked projects
     "bol-van", "hufrea", "waujito", "dilluti0n", "gvcoder09", "xvzc", "valdikss", "flowseal",

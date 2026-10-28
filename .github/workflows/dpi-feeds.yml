@@ -1,4 +1,5 @@
-# Daily snapshot of issues, comments and discussions from DPI-bypass repos via the official GitHub API.
+# Daily snapshot of issues, comments and discussions from DPI-bypass repos via the official GitHub API,
+# plus public ntc.party forum posts (dpi-feeds/ntc.jsonl).
 # Read by the "B4 DPI bypass digest" scheduled task (git clone of this repo, reads dpi-feeds/).
 name: dpi-feeds
 
@@ -24,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Collect issues, comments, discussions (last 8 days)
+      - name: Collect issues, comments, discussions, ntc.party posts (last 8 days)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -54,8 +55,10 @@ jobs:
           for P in netwalker071778/chimera-project; do
             python3 .github/scripts/gitlab_feed.py "$P" "$SINCE" >> $OUT/items.jsonl 2>>$OUT/errors.txt || echo "gitlab failed: $P" >> $OUT/errors.txt
           done
+          # ntc.party forum, also unreachable from the digest's shell; own file so it stays out of the GitHub views
+          python3 .github/scripts/ntc_feed.py "$SINCE" > $OUT/ntc.jsonl 2>>$OUT/errors.txt || echo "ntc failed" >> $OUT/errors.txt
           date -u +%Y-%m-%dT%H:%M:%SZ > $OUT/collected_at.txt
-          wc -l $OUT/items.jsonl; cat $OUT/errors.txt
+          wc -l $OUT/items.jsonl $OUT/ntc.jsonl; cat $OUT/errors.txt
 
       - name: Commit snapshot
         run: |
