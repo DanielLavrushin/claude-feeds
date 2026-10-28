@@ -1,0 +1,63 @@
+# Posts the public DPI digest that the "B4 DPI bypass digest" scheduled task commits to dpi-feeds/digest/.
+# preview -> B4 admin group, news topic (always)
+# publish -> @byebyebigbro, b4:daily topic (only after manual approval of the telegram-public environment)
+name: dpi-digest-post
+
+on:
+  push:
+    paths: ["dpi-feeds/digest/**"]
+  workflow_dispatch:
+    inputs:
+      file:
+        description: "File to post, e.g. dpi-feeds/digest/2026-10-29.html"
+        required: true
+      publish:
+        description: "Also publish to b4:daily (still requires approval)"
+        type: boolean
+        default: false
+
+env:
+  ADMIN_CHAT: "-1003798515834"   # t.me/c/3798515834
+  ADMIN_THREAD: "304"            # news topic
+  PUBLIC_CHAT: "@byebyebigbro"
+  PUBLIC_THREAD: "34914"         # b4:daily topic
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    outputs:
+      file: ${{ steps.pick.outputs.file }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Pick digest file
+        id: pick
+        env:
+          EVENT: ${{ github.event_name }}
+          INPUT_FILE: ${{ inputs.file }}
+        run: |
+          if [ "$EVENT" = "workflow_dispatch" ]; then F="$INPUT_FILE"
+          else F=$(git diff --name-only --diff-filter=AM HEAD~1 HEAD -- 'dpi-feeds/digest/*.html' | tail -n1); fi
+          if [ -z "$F" ] || [ ! -f "$F" ]; then echo "no digest file to post: '$F'"; exit 1; fi
+          echo "file=$F" >> "$GITHUB_OUTPUT"
+
+      - name: Preview to admin topic
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          HEADER: "📝 Черновик для b4:daily. Approve или Reject: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        run: python3 .github/scripts/tg_post.py "${{ steps.pick.outputs.file }}" "$ADMIN_CHAT" "$ADMIN_THREAD"
+
+  publish:
+    needs: preview
+    if: github.event_name == 'push' || inputs.publish
+    runs-on: ubuntu-latest
+    environment: telegram-public   # required reviewer gate - set up in repo Settings > Environments
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Publish to b4:daily
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: python3 .github/scripts/tg_post.py "${{ needs.preview.outputs.file }}" "$PUBLIC_CHAT" "$PUBLIC_THREAD"
