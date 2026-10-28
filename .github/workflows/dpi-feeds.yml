@@ -1,4 +1,6 @@
 # Daily snapshot of issues, comments and discussions from DPI-bypass repos via the official GitHub API.
+# dpi-feeds/ntc*.{jsonl,txt} are pushed by .github/scripts/ntc_push.sh on Daniel's Raspberry Pi instead:
+# ntc.party refuses GitHub's runners.
 # Read by the "B4 DPI bypass digest" scheduled task (git clone of this repo, reads dpi-feeds/).
 name: dpi-feeds
 
@@ -63,5 +65,4 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add "$OUT"
           git diff --cached --quiet || git commit -m "$OUT $(date -u +%F)"
-          git pull --rebase -q
-          git push
+          for i in 1 2 3; do git pull --rebase -q && git push && exit 0; sleep 15; done; exit 1   # the Pi pushes ntc.* too
