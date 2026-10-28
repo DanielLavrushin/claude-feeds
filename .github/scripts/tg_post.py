@@ -2,7 +2,9 @@
 """Post a Telegram-HTML file to a chat/topic.
 
 Usage: tg_post.py FILE CHAT_ID [THREAD_ID]
-Env:   TELEGRAM_BOT_TOKEN (required), HEADER (optional line prepended to the first message)
+       tg_post.py --check FILE      prints links outside the allowlist, exit 1 if any
+Env:   TELEGRAM_BOT_TOKEN (required for posting), HEADER (optional plain-text line
+       prepended to the first message), SILENT=1 (no notification sound)
 
 Splits at blank lines to fit Telegram's 4096-char limit.
 If Telegram rejects the HTML, the chunk is resent as plain text so the post is never lost.
@@ -13,15 +15,42 @@ import os
 import re
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 
-TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 LIMIT = 3900
+
+# Links allowed in auto-published posts. The digest summarizes public issues/comments that
+# anyone can write, so a post must never carry a link the model picked up from them.
+ALLOWED_HOSTS = {
+    "habr.com", "gfw.report", "ooni.org", "explorer.ooni.org", "censoredplanet.org",
+    "usenix.org", "www.usenix.org", "petsymposium.org", "arxiv.org", "byebyedpi.xyz",
+}
+GITHUB_OWNERS = {  # github.com links only to the tracked projects
+    "bol-van", "hufrea", "waujito", "dilluti0n", "gvcoder09", "xvzc", "valdikss", "flowseal",
+    "romanvht", "xtls", "sagernet", "apernet", "amnezia-vpn", "net4people", "daniellavrushin",
+}
+
+
+def bad_links(text):
+    bad = []
+    for url in re.findall(r"https?://[^\s\"'<>]+", html.unescape(text)):
+        u = urllib.parse.urlsplit(url)
+        host = (u.hostname or "").lower()
+        owner = u.path.strip("/").split("/")[0].lower()
+        if u.scheme != "https":
+            bad.append(url)
+        elif host == "github.com":
+            if owner not in GITHUB_OWNERS:
+                bad.append(url)
+        elif host not in ALLOWED_HOSTS:
+            bad.append(url)
+    return bad
 
 
 def api(method, payload):
     req = urllib.request.Request(
-        f"https://api.telegram.org/bot{TOKEN}/{method}",
+        f"https://api.telegram.org/bot{os.environ['TELEGRAM_BOT_TOKEN']}/{method}",
         data=json.dumps(payload).encode(),
         headers={"Content-Type": "application/json"},
     )
@@ -50,7 +79,8 @@ def chunks(text):
 
 
 def send(chat, thread, text):
-    base = {"chat_id": chat, "link_preview_options": {"is_disabled": True}}
+    base = {"chat_id": chat, "link_preview_options": {"is_disabled": True},
+            "disable_notification": os.environ.get("SILENT") == "1"}
     if thread:
         base["message_thread_id"] = int(thread)
     r = api("sendMessage", {**base, "text": text, "parse_mode": "HTML"})
@@ -62,6 +92,10 @@ def send(chat, thread, text):
 
 
 def main():
+    if sys.argv[1] == "--check":
+        bad = bad_links(open(sys.argv[2], encoding="utf-8").read())
+        print("\n".join(bad))
+        sys.exit(1 if bad else 0)
     path, chat = sys.argv[1], sys.argv[2]
     thread = sys.argv[3] if len(sys.argv) > 3 and sys.argv[3] else None
     text = open(path, encoding="utf-8").read().strip()
@@ -70,7 +104,7 @@ def main():
     header = os.environ.get("HEADER", "").strip()
     parts = chunks(text)
     if header:
-        parts[0] = f"{header}\n\n{parts[0]}"
+        parts[0] = f"{html.escape(header, quote=False)}\n\n{parts[0]}"
     for part in parts:
         send(chat, thread, part)
     print(f"posted {path} -> {chat} thread {thread} ({len(parts)} message(s))")

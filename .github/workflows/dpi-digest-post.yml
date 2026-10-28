@@ -1,6 +1,6 @@
-# Posts the public DPI digest that the "B4 DPI bypass digest" scheduled task commits to dpi-feeds/digest/.
-# preview -> B4 admin group, news topic (always)
-# publish -> @byebyebigbro, b4:daily topic (only after manual approval of the telegram-public environment)
+# Posts the public DPI digest that the "DPI bypass digest" scheduled task commits to dpi-feeds/digest/.
+# Automatic: on push -> link allowlist check -> silent post to @byebyebigbro b4:daily.
+# If the check fails, nothing goes public: the post is sent to the B4 admin news topic with the reason.
 name: dpi-digest-post
 
 on:
@@ -11,8 +11,13 @@ on:
       file:
         description: "File to post, e.g. dpi-feeds/digest/2026-10-29.html"
         required: true
-      publish:
-        description: "Also publish to b4:daily (still requires approval)"
+      target:
+        description: "admin = test in admin news topic, public = b4:daily"
+        type: choice
+        options: [admin, public]
+        default: admin
+      force:
+        description: "Skip the link allowlist check (only after checking the links yourself)"
         type: boolean
         default: false
 
@@ -23,10 +28,8 @@ env:
   PUBLIC_THREAD: "34914"         # b4:daily topic
 
 jobs:
-  preview:
+  post:
     runs-on: ubuntu-latest
-    outputs:
-      file: ${{ steps.pick.outputs.file }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -43,21 +46,42 @@ jobs:
           if [ -z "$F" ] || [ ! -f "$F" ]; then echo "no digest file to post: '$F'"; exit 1; fi
           echo "file=$F" >> "$GITHUB_OUTPUT"
 
-      - name: Preview to admin topic
+      - name: Check links against allowlist
+        id: links
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          HEADER: "📝 Черновик для b4:daily. Approve или Reject: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-        run: python3 .github/scripts/tg_post.py "${{ steps.pick.outputs.file }}" "$ADMIN_CHAT" "$ADMIN_THREAD"
-
-  publish:
-    needs: preview
-    if: github.event_name == 'push' || inputs.publish
-    runs-on: ubuntu-latest
-    environment: telegram-public   # required reviewer gate - set up in repo Settings > Environments
-    steps:
-      - uses: actions/checkout@v4
+          FILE: ${{ steps.pick.outputs.file }}
+          FORCE: ${{ inputs.force }}
+        run: |
+          if [ "$FORCE" = "true" ]; then echo "ok=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          if BAD=$(python3 .github/scripts/tg_post.py --check "$FILE"); then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            { echo "bad<<LINKS_EOF"; echo "$BAD"; echo "LINKS_EOF"; } >> "$GITHUB_OUTPUT"
+            echo "::warning::links outside allowlist: $BAD"
+          fi
 
       - name: Publish to b4:daily
+        if: steps.links.outputs.ok == 'true' && (github.event_name == 'push' || inputs.target == 'public')
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        run: python3 .github/scripts/tg_post.py "${{ needs.preview.outputs.file }}" "$PUBLIC_CHAT" "$PUBLIC_THREAD"
+          SILENT: "1"   # daily news should not ping 3.7K people
+        run: python3 .github/scripts/tg_post.py "${{ steps.pick.outputs.file }}" "$PUBLIC_CHAT" "$PUBLIC_THREAD"
+
+      - name: Test post to admin topic
+        if: steps.links.outputs.ok == 'true' && github.event_name == 'workflow_dispatch' && inputs.target == 'admin'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: python3 .github/scripts/tg_post.py "${{ steps.pick.outputs.file }}" "$ADMIN_CHAT" "$ADMIN_THREAD"
+
+      - name: Held back - send to admin topic
+        if: steps.links.outputs.ok == 'false'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          HEADER: |
+            ⚠️ НЕ опубликовано в b4:daily - ссылки вне allowlist:
+            ${{ steps.links.outputs.bad }}
+            Проверь ссылки. Опубликовать вручную: Actions → dpi-digest-post → Run workflow, file=${{ steps.pick.outputs.file }}, target=public, force=true
+        run: |
+          python3 .github/scripts/tg_post.py "${{ steps.pick.outputs.file }}" "$ADMIN_CHAT" "$ADMIN_THREAD"
+          exit 1   # mark the run failed so GitHub notifies you too
