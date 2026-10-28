@@ -1,0 +1,63 @@
+# Daily snapshot of issues, comments and discussions from DPI-bypass repos via the official GitHub API.
+# Read by the "B4 DPI bypass digest" scheduled task (git clone of this repo, reads dpi-feeds/).
+name: dpi-feeds
+
+on:
+  schedule:
+    - cron: "7 4 * * *"   # 04:07 UTC = 05:07 CET / 06:07 CEST - leaves margin for GitHub cron delays before the 07:30 digest
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# shared by all feed workflows in this repo - they queue instead of racing on git push
+concurrency:
+  group: claude-feeds-push
+  cancel-in-progress: false
+
+env:
+  OUT: dpi-feeds
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Collect issues, comments, discussions (last 8 days)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -u
+          SINCE=$(date -u -d '8 days ago' +%Y-%m-%dT%H:%M:%SZ)
+          REPOS="net4people/bbs bol-van/zapret bol-van/zapret2 hufrea/byedpi Waujito/youtubeUnblock Flowseal/zapret-discord-youtube romanvht/ByeByeDPI GVCoder09/NoDPI dilluti0n/dpibreak xvzc/SpoofDPI XTLS/Xray-core"
+          mkdir -p "$OUT"
+          : > $OUT/items.jsonl
+          : > $OUT/errors.txt
+          for R in $REPOS; do
+            gh api --paginate "repos/$R/issues?state=all&since=$SINCE&sort=updated&direction=desc&per_page=100" \
+              --jq ".[] | select(.pull_request|not) | {type:\"issue\", repo:\"$R\", url:.html_url, title, user:.user.login, created:.created_at, updated:.updated_at, comments:.comments, body:((.body//\"\")[:1500])}" \
+              >> $OUT/items.jsonl 2>>$OUT/errors.txt || echo "issues failed: $R" >> $OUT/errors.txt
+
+            gh api --paginate "repos/$R/issues/comments?since=$SINCE&sort=updated&direction=desc&per_page=100" \
+              --jq ".[] | {type:\"comment\", repo:\"$R\", url:.html_url, user:.user.login, created:.created_at, updated:.updated_at, body:((.body//\"\")[:1000])}" \
+              >> $OUT/items.jsonl 2>>$OUT/errors.txt || echo "comments failed: $R" >> $OUT/errors.txt
+
+            gh api graphql -f owner="${R%/*}" -f name="${R#*/}" -f query='
+              query($owner:String!,$name:String!){repository(owner:$owner,name:$name){hasDiscussionsEnabled
+                discussions(first:30,orderBy:{field:UPDATED_AT,direction:DESC}){nodes{title url createdAt updatedAt author{login} body
+                  comments(last:15){nodes{url createdAt author{login} body}}}}}}' \
+              --jq ".data.repository | select(.hasDiscussionsEnabled) | .discussions.nodes[] | select(.updatedAt >= \"$SINCE\") | {type:\"discussion\", repo:\"$R\", url, title, user:.author.login, created:.createdAt, updated:.updatedAt, body:((.body//\"\")[:1500]), comments:[.comments.nodes[] | select(.createdAt >= \"$SINCE\") | {url, user:.author.login, created:.createdAt, body:((.body//\"\")[:800])}]}" \
+              >> $OUT/items.jsonl 2>>$OUT/errors.txt || echo "discussions failed: $R" >> $OUT/errors.txt
+          done
+          date -u +%Y-%m-%dT%H:%M:%SZ > $OUT/collected_at.txt
+          wc -l $OUT/items.jsonl; cat $OUT/errors.txt
+
+      - name: Commit snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$OUT"
+          git diff --cached --quiet || git commit -m "$OUT $(date -u +%F)"
+          git pull --rebase -q
+          git push
