@@ -50,6 +50,10 @@ jobs:
               --jq ".data.repository | select(.hasDiscussionsEnabled) | .discussions.nodes[] | select(.updatedAt >= \"$SINCE\") | {type:\"discussion\", repo:\"$R\", url, title, user:.author.login, created:.createdAt, updated:.updatedAt, body:((.body//\"\")[:1500]), comments:[.comments.nodes[] | select(.createdAt >= \"$SINCE\") | {url, user:.author.login, created:.createdAt, body:((.body//\"\")[:800])}]}" \
               >> $OUT/items.jsonl 2>>$OUT/errors.txt || echo "discussions failed: $R" >> $OUT/errors.txt
           done
+          # friendly projects hosted on GitLab (the digest's shell can't reach gitlab.com, Actions can)
+          for P in netwalker071778/chimera-project; do
+            python3 .github/scripts/gitlab_feed.py "$P" "$SINCE" >> $OUT/items.jsonl 2>>$OUT/errors.txt || echo "gitlab failed: $P" >> $OUT/errors.txt
+          done
           date -u +%Y-%m-%dT%H:%M:%SZ > $OUT/collected_at.txt
           wc -l $OUT/items.jsonl; cat $OUT/errors.txt
 
