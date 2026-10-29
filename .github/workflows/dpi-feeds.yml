@@ -7,6 +7,7 @@ name: dpi-feeds
 on:
   schedule:
     - cron: "7 4 * * *"   # 04:07 UTC = 05:07 CET / 06:07 CEST - leaves margin for GitHub cron delays before the 07:30 digest
+    - cron: "47 4 * * *"  # backup: GitHub drops scheduled runs under load (29.10 never ran); 04:47 UTC is still before the digest in CET and CEST
   workflow_dispatch:
 
 permissions:
@@ -56,6 +57,13 @@ jobs:
           for P in netwalker071778/chimera-project; do
             python3 .github/scripts/gitlab_feed.py "$P" "$SINCE" >> $OUT/items.jsonl 2>>$OUT/errors.txt || echo "gitlab failed: $P" >> $OUT/errors.txt
           done
+          # comment rows have no thread title - take it from the issue rows (a new comment bumps the issue's updated_at,
+          # so its issue is in the snapshot). PR comments have no issue row and stay untitled.
+          jq -s -c '(map(select(.type == "issue") | {key: .url, value: .title}) | from_entries) as $t
+            | .[] | ((.url // "") | split("#")[0]) as $u
+            | if .type == "comment" and $t[$u] then . + {title: $t[$u]} else . end' \
+            $OUT/items.jsonl > $OUT/items.tmp && mv $OUT/items.tmp $OUT/items.jsonl \
+            || { rm -f $OUT/items.tmp; echo "comment title join failed" >> $OUT/errors.txt; }
           date -u +%Y-%m-%dT%H:%M:%SZ > $OUT/collected_at.txt
           wc -l $OUT/items.jsonl; cat $OUT/errors.txt
 
