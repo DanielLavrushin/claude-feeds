@@ -1,0 +1,25 @@
+<b>DPI-дайджест · 29.10.2026</b>
+
+<b>Поведение DPI</b>
+
+<b>YouTube: отдельные правила и шейпинг для googlevideo</b> - на ntc.party сообщают, что прежние стратегии для *.googlevideo.com перестали работать, а для остальных доменов YouTube продолжают; для googlevideo пришлось подбирать отдельную, более мягкую стратегию. Параллельно описывают нестабильную скорость отдельных кэш-узлов: сегменты то грузятся мгновенно, то зависают на десятки секунд. В zapret2 похожая картина для QUIC к GGC - периодический шейпинг до 100-300 кБ/с. <i>несколько отчетов</i>
+<a href="https://ntc.party/t/9057/475">источник</a>
+
+<b>Блокировка DoH NextDNS по SNI</b> - на ntc.party сообщают, что с вечера 28.10 домены *.nextdns.io попадают под блок с обрывом после ~16 КБ, при этом dns.nextdns.io у одного из пользователей работает. <i>два отчета</i>
+<a href="https://ntc.party/t/23007/204">источник</a>
+
+<b>FACEIT EU</b> - в zapret-discord-youtube с 28.10 три независимых жалобы на пропажу соединения с европейскими серверами FACEIT, которые раньше работали с game filter TCP/UDP. Технических деталей пока нет. <i>несколько отчетов</i>
+<a href="https://github.com/Flowseal/zapret-discord-youtube/discussions/18421">источник</a>
+
+<b>Инструменты</b>
+
+<b>zapret2: udp2icmp за CGNAT</b> - bol-van дополнил документацию: на провайдерском CGNAT время жизни ICMP identifier около 30 секунд и обновляется только исходящими пакетами, поэтому для WireGuard в ICMP нужен частый keepalive с клиента. Некоторые операторы троттлят ICMP. <i>подтверждено в коде</i>
+<a href="https://github.com/bol-van/zapret2/commit/019bbe8">источник</a>
+
+<b>Xray: REALITY без SNI</b> - в issue показано, что для пустого SNI REALITY не копирует post-handshake записи (NewSessionTicket) целевого сервера, хотя для остальных имен копирует. Это то же расхождение, на котором строится детект Aparecium. Отдельно Xray теперь предупреждает о переносе fragment и noises в Freedom outbound на Finalmask. <i>единичный отчет</i>
+<a href="https://github.com/XTLS/Xray-core/issues/7280">источник</a>
+
+<b>Проекты сообщества</b>
+<b>chimera-project</b> - fragment-ссылки для Happ/Incy/Neko в TUI и в base64-подписках под переключателем client_fragment, <a href="https://gitlab.com/netwalker071778/chimera-project/-/commit/274c51efc556e8cf8d8b19973b732f6d2d5ea300">подробнее</a>
+
+<i>Собрано автоматически.</i>
