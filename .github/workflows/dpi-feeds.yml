@@ -2,12 +2,15 @@
 # dpi-feeds/ntc*.{jsonl,txt} are pushed by .github/scripts/ntc_push.sh on Daniel's Raspberry Pi instead:
 # ntc.party refuses GitHub's runners.
 # Read by the "B4 DPI bypass digest" scheduled task (git clone of this repo, reads dpi-feeds/).
+# The task starts this run itself: it pushes dpi-feeds/refresh first, collects git activity while this runs (~1 min),
+# then reads the fresh snapshot.
 name: dpi-feeds
 
 on:
+  push:
+    paths: ["dpi-feeds/refresh"]   # pushed by the digest task at the start of its run
   schedule:
-    - cron: "7 4 * * *"   # 04:07 UTC = 05:07 CET / 06:07 CEST - leaves margin for GitHub cron delays before the 07:30 digest
-    - cron: "47 4 * * *"  # backup: GitHub drops scheduled runs under load (29.10 never ran); 04:47 UTC is still before the digest in CET and CEST
+    - cron: "7 4 * * *"   # fallback only: GitHub starts schedules hours late under load (29-30.10: ~6.5h)
   workflow_dispatch:
 
 permissions:
