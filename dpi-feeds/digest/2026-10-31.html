@@ -1,0 +1,23 @@
+<b>DPI-дайджест · 31.10.2026</b>
+
+<b>Инструменты</b>
+<b>chimera-project v4.31</b> - «Fragment &amp; FP Customizer»: пресеты и ручные параметры фрагментации и fingerprint во всех режимах, плюс dual-схема фрагментации под Xray-core 26.10.29, где <code>freedom.fragment</code> объявлен устаревшим в пользу <code>streamSettings.finalmask.tcp</code> · <a href="https://gitlab.com/netwalker071778/chimera-project/-/commit/c0c42fc05b728b13ee7b18d90671aed505dc232e">подробнее</a>
+
+<b>Обсуждения</b>
+<b>Cloudflare и ClientHello с Kyber</b> - на ntc.party сообщают, что с 30.10 сайты за Cloudflare не открываются в браузерах с Kyber (ClientHello уходит в 2 сегмента) на РТК СЗ, ЦФО и УрФО, Билайн, МГТС, Т2, а <code>curl --curves X25519</code> или TLS 1.2 проходят; пример - <code>registry.npmjs.org</code> (ClientHello 1595 байт) работает, <code>www.npmjs.org</code> (1875 байт) нет. Один пользователь при этом видит полный TCP-бан части IP CF даже на TLS 1.2. <i>несколько отчетов</i> · <a href="https://ntc.party/t/17013/1424">источник</a>
+
+<b>zapret2: hostlist не срабатывает при малом TCP-окне сервера</b> - bol-van разобрал случай с <code>dns.nextdns.io</code>: сервер сужает начальное окно до ~1.4 КБ, ClientHello с Kyber не помещается, reasm отменяется и SNI не определяется, поэтому профиль с хостлистом пропускает соединение; решение - ipset вместо хостлиста, а маркеры multisplit без reasm могут не сработать. <i>единичный отчет, разбор bol-van</i> · <a href="https://ntc.party/t/21161/1384">источник</a>
+
+<b>Блокировка DoH Cloudflare и Google</b> - на ntc.party сообщают о недоступности DoH/DoT Cloudflare, Google и OpenDNS 30.10 на РТК (ЦФО, УрФО) и мобильном интернете; клиенты DoH без Kyber, по словам участников, работают. <i>несколько отчетов</i> · <a href="https://ntc.party/t/23007/232">источник</a>
+
+<b>Жалобы на YouTube и Discord в трекере Flowseal</b> - за сутки 4 независимых отчета о том, что YouTube перестал грузиться или сильно тормозит с 26-29.10, и 5 отчетов о падении Discord на прежних альтах. <i>несколько отчетов</i> · <a href="https://github.com/Flowseal/zapret-discord-youtube/issues/18486">источник</a>
+
+<b>YouTube: задержка из-за выбора узла GGC</b> - на ntc.party сообщают, что задержка ~5 с в мобильном приложении пропадает, если <code>redirector.googlevideo.com</code> идет через VPN: тогда отдается зарубежный узел вместо локального. <i>единичный отчет</i> · <a href="https://ntc.party/t/26415/37">источник</a>
+
+<b>Бан IP зарубежного VPS с OpenVPN</b> - на ntc.party сообщают о блокировке IP сервера с OpenVPN UDP tls-crypt через три недели работы, без SSH-сессий из РФ и с закрытыми портами. <i>единичный отчет</i> · <a href="https://ntc.party/t/25993/107">источник</a>
+
+<b>Telegram на УГМК</b> - на ntc.party сообщают, что у небольшого провайдера УГМК задушили <code>149.154.167.220</code>, ранее стабильно работавший адрес Telegram. <i>единичный отчет</i> · <a href="https://ntc.party/t/11532/564">источник</a>
+
+<b>Китай: Reality против Hysteria2</b> - на net4people сообщают, что порт VLESS Reality Vision на «засвеченном» VPS блокировался за минуту, а Hysteria2 на новом сервере пока работает. <i>единичный отчет</i> · <a href="https://github.com/net4people/bbs/issues/129#issuecomment-6525524272">источник</a>
+
+<i>Собрано автоматически.</i>
