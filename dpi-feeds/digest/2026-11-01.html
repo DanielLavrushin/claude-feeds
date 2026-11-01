@@ -1,0 +1,26 @@
+<b>DPI-дайджест · 01.11.2026</b>
+<b>Инструменты</b>
+<b>B4 v1.89.0</b> - адреса, которые провайдер блокирует целиком, банятся и сразу отбиваются вместо зависания; Telegram через WebSocket и MTProto-прокси больше не шлет к Cloudflare первый пакет крупнее одного сегмента · <a href="https://github.com/DanielLavrushin/b4/releases/tag/v1.89.0">подробнее</a>
+
+<b>B4 v1.89.1</b> - исправлены пропуски и ложные баны в IP Block Detection, быстрый отказ для отклоненных QUIC/UDP в режиме TUN · <a href="https://github.com/DanielLavrushin/b4/releases/tag/v1.89.1">подробнее</a>
+
+<b>Xray-core v26.10.31</b> - QUIC sniffer больше не принимает ClientHello с пропусками в CRYPTO-фреймах, у XHTTP-сервера появились <code>h2Params</code> и метод <code>OPTIONS</code> для <code>uplinkHTTPMethod</code>, MPTCP по умолчанию выключен. <i>подтверждено в коде</i> · <a href="https://github.com/XTLS/Xray-core/releases/tag/v26.10.31">источник</a>
+
+<b>zapret2</b> - bol-van добавил в хостлисты nfqws2 локальные исключения с префиксом <code>!</code> (например <code>com</code> + <code>!vk.com</code>), для автолиста такое исключение работает как exclude; в zapret-obfs появилась поддержка CGNAT для udp2icmp. <i>подтверждено в коде</i> · <a href="https://github.com/bol-van/zapret2/commit/48ec126">источник</a>
+
+<b>ByeDPI</b> - hufrea исправил HTTP-прокси режим: цель CONNECT теперь берется из строки запроса, а не из <code>Host</code>, из-за чего клиенты Apple уходили на порт 80. <i>подтверждено в коде</i> · <a href="https://github.com/hufrea/byedpi/commit/9887576">источник</a>
+
+<b>chimera-project</b> - 17 коммитов: гистерезис health-проверок mieru-каскада (UP только после 3 успешных E2E подряд), новый модуль LibreChat с мониторингом · <a href="https://gitlab.com/netwalker071778/chimera-project/-/commit/21db0e7b330ee5d487073c7d0033c0d945f776a7">подробнее</a>
+
+<b>Обсуждения</b>
+<b>Cloudflare: блок ClientHello из нескольких сегментов</b> - на ntc.party сообщают, что с 30.10 ТСПУ рвет TLS к подсетям Cloudflare (<code>104.16.0.0/12</code>, <code>172.64.0.0/13</code>, <code>188.114.96.0/22</code>), если ClientHello не влез в один TCP-сегмент; по тестам curl-impersonate блокируются отпечатки Chrome 124+ с постквантовым X25519MLKEM768, старые проходят, отключение Kyber в браузере или zapret2 помогает (Ростелеком, МГТС, Т2 и другие). <i>несколько отчетов</i> · <a href="https://ntc.party/t/17013/1432">источник</a>
+
+<b>Фейк больше TCP-окна режется</b> - bol-van поясняет, что DPI может учитывать размер TCP-окна и отбрасывать все, что за него выходит: большой фейк с Kyber-ClientHello не влезает в окно 1448 байт, и анализатор не видит в нем SNI. <i>единичный отчет</i> · <a href="https://ntc.party/t/21161/1392">источник</a>
+
+<b>REALITY: при параллельных подключениях уходит только первый сегмент ClientHello</b> - в Xray-core описан баг клиента: при пачке одновременных REALITY-подключений с отпечатком <code>chrome</code> (ClientHello 1748 байт) хвост после первого сегмента не отправляется и не ретрансмитится. <i>единичный отчет</i> · <a href="https://github.com/XTLS/Xray-core/issues/7306">источник</a>
+
+<b>UDP к игровым серверам на OVH</b> - в Flowseal/zapret-discord-youtube с 29.10 несколько пользователей сообщают, что перестал проходить UDP к игровым серверам в европейских хостингах (официальные сервера Rust на адресах OVH, Quake 3-движок на OVH, EU-сервера Faceit), прежние стратегии не помогают. <i>несколько отчетов</i> · <a href="https://github.com/Flowseal/zapret-discord-youtube/discussions/18446">источник</a>
+
+<b>Google: часть адресов только через wssize</b> - на ntc.party сообщают, что отдельные адреса Google (не googlevideo) пробиваются только <code>--wssize 1:1</code>, соседний IP того же сервиса работает без него. <i>единичный отчет</i> · <a href="https://ntc.party/t/21161/1395">источник</a>
+
+<i>Собрано автоматически.</i>
