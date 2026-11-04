@@ -1,6 +1,6 @@
 # Daily snapshot of issues, comments and discussions from DPI-bypass repos via the official GitHub API.
-# dpi-feeds/ntc*.{jsonl,txt} are pushed by .github/scripts/ntc_push.sh on Daniel's Raspberry Pi instead:
-# ntc.party refuses GitHub's runners.
+# dpi-feeds/{ntc,web}*.{jsonl,txt} are pushed by .github/scripts/pi_feeds.sh on Daniel's Raspberry Pi instead:
+# ntc.party refuses GitHub's runners, Habr and gfw.report refuse the digest's cloud shell.
 # Read by the "B4 DPI bypass digest" scheduled task (git clone of this repo, reads dpi-feeds/).
 # The task starts this run itself: it pushes dpi-feeds/refresh first, collects git activity while this runs (~1 min),
 # then reads the fresh snapshot.
@@ -67,6 +67,13 @@ jobs:
             | if .type == "comment" and $t[$u] then . + {title: $t[$u]} else . end' \
             $OUT/items.jsonl > $OUT/items.tmp && mv $OUT/items.tmp $OUT/items.jsonl \
             || { rm -f $OUT/items.tmp; echo "comment title join failed" >> $OUT/errors.txt; }
+          # release notes for the digest (WebFetch is refused in its runs, git tags carry no notes)
+          : > $OUT/releases.jsonl
+          for R in DanielLavrushin/b4 DanielLavrushin/b4hub DanielLavrushin/asuswrt-merlin-xrayui bol-van/zapret bol-van/zapret2 hufrea/byedpi Waujito/youtubeUnblock dilluti0n/dpibreak GVCoder09/NoDPI xvzc/SpoofDPI ValdikSS/GoodbyeDPI Flowseal/zapret-discord-youtube romanvht/ByeByeDPI Runnin4ik/dpi-detector XTLS/Xray-core SagerNet/sing-box apernet/hysteria amnezia-vpn/amneziawg-go william-aqn/microtik-awg3-installer william-aqn/asuswrt-merlin-amneziawg; do
+            gh api "repos/$R/releases?per_page=5" \
+              --jq ".[] | {repo:\"$R\", tag:.tag_name, name, prerelease, published:.published_at, url:.html_url, body:((.body//\"\")[:1500])}" \
+              >> $OUT/releases.jsonl 2>>$OUT/errors.txt || echo "releases failed: $R" >> $OUT/errors.txt
+          done
           date -u +%Y-%m-%dT%H:%M:%SZ > $OUT/collected_at.txt
           wc -l $OUT/items.jsonl; cat $OUT/errors.txt
 
@@ -76,4 +83,4 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add "$OUT"
           git diff --cached --quiet || git commit -m "$OUT $(date -u +%F)"
-          for i in 1 2 3; do git pull --rebase -q && git push && exit 0; sleep 15; done; exit 1   # the Pi pushes ntc.* too
+          for i in 1 2 3; do git pull --rebase -q && git push && exit 0; sleep 15; done; exit 1   # the Pi pushes too
