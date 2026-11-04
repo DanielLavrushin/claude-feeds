@@ -22,6 +22,10 @@ for N in "$@"; do
   elif [ $(( NOW - $(date -u -d "$collected" +%s 2>/dev/null || echo 0) )) -ge 43200 ]; then   # no new snapshot today: nothing new to read
     start=$last
   fi                                                   # else a rerun of today's digest: same window again
+  case "$start" in
+    20[0-9][0-9]-*T*Z) ;;
+    *) start=$(date -u -d '26 hours ago' +%Y-%m-%dT%H:%M:%SZ) ;;   # a damaged file must not empty the window
+  esac
   echo "$start" > "$DIR/${N}_since"
   echo "$N window starts $start (snapshot ${collected:-none})"
 done

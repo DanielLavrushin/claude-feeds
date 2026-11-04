@@ -21,6 +21,7 @@ UA = "Mozilla/5.0 (X11; Linux x86_64)"
 HABR = "https://habr.com/ru/rss/search/?q={}&order_by=date&target_type=posts&hl=ru&fl=ru"
 FEEDS = [("habr", q, HABR.format(urllib.parse.quote(q))) for q in ("DPI", "ТСПУ", "zapret", "byedpi", "[тспу]", "[Роскомнадзор]")]
 FEEDS.append(("gfw.report", "gfw.report", "https://gfw.report/index.xml"))
+DELAY = 10  # Habr's robots.txt: Crawl-delay 10
 MAX_ARTICLES = 10
 LEAD = 1500
 ARTICLE = 6000
@@ -57,7 +58,7 @@ def main():
             failed.add(source)
             continue
         finally:
-            time.sleep(3)
+            time.sleep(DELAY)
         for it in root.iter("item"):
             link = (it.findtext("link") or "").split("?")[0]
             try:
@@ -80,7 +81,7 @@ def main():
                 o["body"], o["full_text"] = body, True
         except Exception as e:
             print(f"habr article {o['url']}: {e}", file=sys.stderr)  # the lead stays; not a source failure
-        time.sleep(3)
+        time.sleep(DELAY)
 
     for o in rows:
         print(json.dumps(o, ensure_ascii=False))
