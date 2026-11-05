@@ -1,0 +1,19 @@
+<b>DPI-дайджест · 05.11.2026</b>
+
+<b>Инструменты</b>
+<b>XRAYUI v0.71.0</b> - header obfuscation для TCP-транспорта (path и Host), Authority и Multi mode для gRPC, TCP keepalive в sockopt, откат на прошлые версии из UI · <a href="https://github.com/DanielLavrushin/asuswrt-merlin-xrayui/releases/tag/v0.71.0">подробнее</a>
+
+<b>geneva_c</b> - на ntc.party представлен порт Geneva на C: генетический алгоритм сам собирает цепочки <code>duplicate</code>/<code>fragment</code>/<code>tamper</code>/<code>drop</code> и проверяет их на реальном DPI через NFQUEUE или WinDivert, есть server-side режим и сборки для роутеров. <i>единичный отчет</i> · <a href="https://ntc.party/t/26535/1">источник</a>
+
+<b>chimera-project</b> - 1 коммит: удален набор устаревших модулей (docs/registry/tg/api) · <a href="https://gitlab.com/netwalker071778/chimera-project/-/commit/67b0cafd4e729b2918013af071fb4a4249463ff1">подробнее</a>
+
+<b>Обсуждения</b>
+<b>REALITY и post-quantum key share</b> - в Xray-core сообщают, что из РФ (домашний провайдер и мобильный оператор) REALITY-рукопожатия с hybrid X25519MLKEM768 после ~12 успешных начинают обрываться по таймауту (16/52 успешных против 98/100 с classical X25519), при этом серверы Xray с 26.9.8 принимают только hybrid ClientHello. <i>единичный отчет</i> · <a href="https://github.com/XTLS/Xray-core/discussions/7333">источник</a>
+
+<b>Mihomo и новые серверы REALITY</b> - RPRX закрепил разъяснение: для подключения Mihomo к серверам Xray новых версий нужен fingerprint chrome и <code>support-x25519mlkem768: true</code>, клиенты с edge, ios, qq и random такие серверы отклоняют. <i>подтверждено в коде</i> · <a href="https://github.com/XTLS/Xray-core/issues/7259#issuecomment-6626094020">источник</a>
+
+<b>Яндекс CDN и белые списки</b> - на ntc.party сообщают, что проксирование через Яндекс CDN перестало работать в мобильной сети в режиме белых списков, по Wi-Fi все работает. <i>единичный отчет</i> · <a href="https://ntc.party/t/25574/122">источник</a>
+
+<b>Xray: что работает и что блокируется</b> - на ntc.party начали сводную тему по протоколам Xray-core: 16 КБ блок HTTP(S) на части подсетей, блокировка или шейпинг Shadowsocks и WireGuard за рубеж, блокировка "голого" VLESS с шифрованием. <i>единичный отчет</i> · <a href="https://ntc.party/t/26533/1">источник</a>
+
+<i>Собрано автоматически.</i>
