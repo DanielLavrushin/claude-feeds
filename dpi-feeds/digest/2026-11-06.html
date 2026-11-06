@@ -1,0 +1,29 @@
+<b>DPI-дайджест · 06.11.2026</b>
+
+<b>Инструменты</b>
+<b>zapret2 v1.0.7</b> - bol-van добавил в zapret-obfs поддержку провайдерского CGNAT для udp2icmp, локальные исключения в хостлистах через префикс <code>!</code> и приоритет WinDivert-фильтра <code>--wf-priority</code> в winws2 (blockcheck2 теперь запускается с <code>--wf-priority=2000</code>). <i>подтверждено в коде</i> · <a href="https://github.com/bol-van/zapret2/releases/tag/v1.0.7">источник</a>
+
+<b>Xray-core: новый fingerprint Chrome</b> - RPRX пишет, что из-за того, что ТСПУ нацелился на fingerprint Chrome 133 (с hybrid X25519MLKEM768), до следующего релиза uTLS-отпечаток будет поднят до Chrome 155, а также увеличен дефолтный concurrency у VLESS Multiplex. <i>единичный отчет</i> · <a href="https://github.com/XTLS/Xray-core/issues/7208#issuecomment-6677620667">источник</a>
+
+<b>Xray-core XDRIVE</b> - в main влит пакет оптимизаций транспорта XDRIVE (туннель через Google Drive API), инструкцию по настройке обещают в release notes следующей версии. <i>подтверждено в коде</i> · <a href="https://github.com/XTLS/Xray-core/commit/043d2e4">источник</a>
+
+<b>Throne v1.4.0 beta</b> - на ntc.party сообщают, что клиент научился генерировать QUIC-сигнатуру по домену для параметров I1/I2 AmneziaWG (как WireSock), и их можно вынуть для использования в обычном awg. <i>несколько отчетов</i> · <a href="https://ntc.party/t/14849/1380">источник</a>
+
+<b>NFQWS2 ASUS Community</b> - на Habr автор описал веб-панель для nfqws2 на ASUSWRT-Merlin (выбор устройств, стратегии, откат изменений), у проекта появились нативные пакеты OpenWrt. <i>единичный отчет</i> · <a href="https://habr.com/ru/articles/1104100/">источник</a>
+
+<b>chimera-project</b> - 4 коммита: новый модуль панели LibreChat, обезличивание дерева (реальные IP и параметры REALITY заменены на тестовые), починка тестов CI · <a href="https://gitlab.com/netwalker071778/chimera-project/-/commit/c2aeef615bc31bac5cf00b34732bfb98d4f92e60">подробнее</a>
+
+<b>Обсуждения</b>
+<b>Обрезанный фейк и подмена версии TLS</b> - на ntc.party сообщают, что недавнюю блокировку на Cloudflare пробивала комбинация byedpi <code>--tlsminor</code> (подмена байта версии в TLS record) и <code>--fake-tls-mod msize=</code> (обрезка фейка до заданного размера); bol-van ответил, что в zapret2 это собирается через <code>tcpseg</code>/<code>multisplit</code> с blob и подгонкой фейка под оригинал. <i>единичный отчет</i> · <a href="https://ntc.party/t/21161/1413">источник</a>
+
+<b>Белые списки и CDN-адреса</b> - на ntc.party сообщают, что edge-адреса Яндекс CDN выпадают из белых списков на мобильных сетях по-разному у разных операторов и регионов, рабочий обход - подставить в клиент другой edge-IP того же CDN вместо домена. <i>несколько отчетов</i> · <a href="https://ntc.party/t/25574/130">источник</a>
+
+<b>Массовые IP-блокировки хостингов</b> - на net4people продолжают сообщать о блокировке IP зарубежных VPS: больше адресов Firstbyte, новые VPS в Финляндии сразу не пингуются, при этом давно установленные WireGuard-сессии продолжают работать. <i>несколько отчетов</i> · <a href="https://github.com/net4people/bbs/issues/671">источник</a>
+
+<b>YouTube: разные блоки для разных доменов</b> - на ntc.party сообщают, что на проводном МТС YouTube перестал работать с одной общей стратегией ByeDPI, а помогают раздельные стратегии по доменам, так как страница и <code>googlevideo.com</code> блокируются разными механизмами (16 КБ блок и блок по SNI). <i>единичный отчет</i> · <a href="https://ntc.party/t/9057/481">источник</a>
+
+<b>GenEva_C и 16 КБ</b> - bol-van на ntc.party отметил, что большая часть найденных GenEva_C стратегий работает только за счет наслоения сегментов и не помогает против 16 КБ блока. <i>единичный отчет</i> · <a href="https://ntc.party/t/26535/2">источник</a>
+
+<b>Hetzner и мобильные операторы</b> - на Habr разобран случай, когда HTTPS с сервера в Hetzner на Билайне, Т2 и МегаФоне зависал после первых нескольких килобайт с ретрансмитами TCP, решением стал перенос на российский VPS. <i>единичный отчет</i> · <a href="https://habr.com/ru/articles/1103982/">источник</a>
+
+<i>Собрано автоматически.</i>
