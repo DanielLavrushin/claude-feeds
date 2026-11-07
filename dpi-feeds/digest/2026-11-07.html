@@ -1,0 +1,17 @@
+<b>DPI-дайджест · 07.11.2026</b>
+
+<b>Инструменты</b>
+<b>Xray-core: XTLS Vision + Mux</b> - в main исправлена порча downlink при нескольких одновременных mux-сессиях поверх Vision (ошибка <code>common/mux: unknown status</code>), записи VisionWriter теперь сериализуются. <i>подтверждено в коде</i> · <a href="https://github.com/XTLS/Xray-core/commit/1c8bf40">источник</a>
+
+<b>chimera-project</b> - 4 коммита: единый путь удаления пользователей во всех меню, сохранение extra-инбаунда VLESS+xHTTP+TLS после пересборки, исправлена диагностика drop-in <code>chimera-server-frag.conf</code> · <a href="https://gitlab.com/netwalker071778/chimera-project/-/commit/be8c6edb8c21f8fe526b03dd11684904464e4bec">подробнее</a>
+
+<b>Обсуждения</b>
+<b>Блок по версии TLS</b> - на ntc.party сообщают, что к адресу <code>20.49.104.36</code> соединение с <code>--tls-max 1.2</code> блокируется, а с TLS 1.3 проходит, то есть фильтр для этого IP реагирует на ClientHello без TLS 1.3. <i>единичный отчет</i> · <a href="https://ntc.party/t/4625/1699">источник</a>
+
+<b>Discord: голос не подключается</b> - в трекере Flowseal/zapret-discord-youtube за сутки несколько пользователей (в том числе на Ростелекоме) пишут, что голосовые звонки Discord висят на подключении на всех стратегиях, часть связывает это с версией 1.10.4; причина (ТСПУ или релиз) неясна из источника. <i>несколько отчетов</i> · <a href="https://github.com/Flowseal/zapret-discord-youtube/issues/18662">источник</a>
+
+<b>Kyber ClientHello в двух пакетах</b> - на ntc.party сообщают, что на прошлой неделе на Cloudflare и других хостингах блокировались все TLS ClientHello с post-quantum key share, растянутые на 2 пакета, и это обходилось простым фейком без kyber. <i>единичный отчет</i> · <a href="https://ntc.party/t/26533/6">источник</a>
+
+<b>Широкий ipset ломает NCSI</b> - в Flowseal/zapret-discord-youtube разобран случай, когда диапазон Akamai <code>23.192.0.0/11</code> в ipset-service отправляет проверку Windows <code>www.msftconnecttest.com</code> в desync, и она уходит в таймаут, пока домен не добавлен в исключения. <i>единичный отчет</i> · <a href="https://github.com/Flowseal/zapret-discord-youtube/issues/18653">источник</a>
+
+<i>Собрано автоматически.</i>
