@@ -1,0 +1,17 @@
+<b>DPI-дайджест · 09.11.2026</b>
+
+<b>Инструменты</b>
+<b>b4hub v1.6.0</b> - Check в консоли считает IP priority из b4 1.90.0 приватным полем сета, ошибка Telegram «chat not found» теперь объясняет, какой chat id нужен · <a href="https://github.com/DanielLavrushin/b4hub/releases/tag/v1.6.0">подробнее</a>
+
+<b>Xray-core v26.11.9</b> - XTLS перешли на свой форк uTLS и сделали <code>hellochrome_155</code> fingerprint по умолчанию; RPRX пишет, что этот отпечаток, по имеющимся данным, пока не попал под ТСПУ, в отличие от старого Chrome 133 с hybrid <code>X25519MLKEM768</code>. <i>подтверждено в коде</i> · <a href="https://github.com/XTLS/Xray-core/issues/7259#issuecomment-6733195752">источник</a>
+
+<b>chimera-project</b> - 9 коммитов: замер полосы параллельными потоками, скоринг REALITY-проб больше не учитывает уже забаненные источники, починена порча state AmneziaWG 3.1 · <a href="https://gitlab.com/netwalker071778/chimera-project/-/commit/efedcfc92f5b65b274e43c41e4291418c1a57447">подробнее</a>
+
+<b>Обсуждения</b>
+<b>Тихий дроп RU→EU при живом ICMP</b> - автор на Habr разбирает блокировку между своими серверами: SYN и UDP с российской стороны до зарубежного IP не доходят и без RST, а ping проходит, поэтому он смотрит в сторону туннеля через ICMP. <i>единичный отчет</i> · <a href="https://habr.com/ru/articles/1105268/">источник</a>
+
+<b>Снятие ограничений на ASN48347</b> - в треде о массовых IP-банах на net4people сообщают, что с этой сети снова работают прямые соединения к Яндексу и к своим серверам, включая SSH. <i>единичный отчет</i> · <a href="https://github.com/net4people/bbs/issues/671#issuecomment-6720612072">источник</a>
+
+<b>Unbihex: Rust-клиент с постквантовым Chrome TLS</b> - на Habr автор TUN-клиента описывает имитацию ClientHello Chrome с PQ key share, свой REALITY-инбаунд и патчи сетевых крейтов под урезанный MTU и белые списки. <i>описание автора</i> · <a href="https://habr.com/ru/articles/1105228/">источник</a>
+
+<i>Собрано автоматически.</i>
