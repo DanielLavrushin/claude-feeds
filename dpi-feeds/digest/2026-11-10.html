@@ -1,0 +1,21 @@
+<b>DPI-дайджест · 10.11.2026</b>
+
+<b>Инструменты</b>
+<b>Xray-core v26.11.9</b> - по умолчанию включен fingerprint Chrome 155+ (собственный форк uTLS); по данным RPRX, ТСПУ его пока не выделяет, тогда как прежний <code>chrome</code> (Chrome 133 + X25519MLKEM768) уже научились отличать, первые пользователи подтверждают работу на мобильных сетях. <i>несколько отчетов</i> · <a href="https://github.com/XTLS/Xray-core/releases/tag/v26.11.9">источник</a>
+
+<b>dpi-detector: тест 8</b> - Runnin4ik добавил в ветку <code>rust</code> замер скорости и TTFB до узла GGC, который YouTube назначает по подписанной media-ссылке, с опциональным сканом соседних адресов кластера. <i>подтверждено в коде</i> · <a href="https://github.com/Runnin4ik/dpi-detector/commit/58cd5c9">источник</a>
+
+<b>sing-box: MASQUE</b> - в dev-ветку добавлена поддержка MASQUE, плюс фиксы AnyTLS (разбиение UDP на кадры) и obfs Hysteria (порча ретрансмитов). <i>подтверждено в коде</i> · <a href="https://github.com/SagerNet/sing-box/commit/04b06186">источник</a>
+
+<b>chimera-project</b> - добавлен fingerprint <code>hellochrome_155</code> (только для клиентских конфигов, нужны ядра от 26.11.9) и наблюдатель трафика exit-нод для VLESS, AWG, Mieru и Naive-каскадов · <a href="https://gitlab.com/netwalker071778/chimera-project/-/commit/09dde770d7fde20b3497b981c7f68e77f4ad65b2">подробнее</a>
+
+<b>Обсуждения</b>
+<b>YouTube: зарубежные узлы GGC/GVS недоступны по TLS</b> - с 9 ноября видео, которых нет в кэше российских GGC, не грузятся: TCP и ClientHello проходят, ServerHello не приходит, TLS-фейки и <code>wssize</code> не помогают, похожее с QUIC; ролики с GGC провайдера или других российских сетей идут через обход как раньше, на Дом.ру, по словам участников, это то же, что на ТТК с 19 октября. <i>несколько отчетов (около 7 на ntc.party и около 10 жалоб в Flowseal/zapret-discord-youtube)</i> · <a href="https://ntc.party/t/26415/64">источник</a>
+
+<b>youtube.com и открытый DNS</b> - на ntc.party сообщают, что ответ на <code>youtube.com</code> подменяется на заглушку для любых нешифрованных DNS, включая <code>9.9.9.9</code> и <code>1.1.1.1</code>, так что нужен шифрованный DNS. <i>единичный отчет</i> · <a href="https://ntc.party/t/9057/483">источник</a>
+
+<b>Блокировка по IP вне реестра</b> - на ntc.party сообщают, что на всех ТСПУ заблокирован IP <code>108.181.20.43</code> целиком, хотя в реестре только один из обслуживаемых им доменов. <i>единичный отчет</i> · <a href="https://ntc.party/t/4625/1700">источник</a>
+
+<b>XHTTP через российские CDN</b> - на ntc.party сообщают, что VLESS + XHTTP (packet-up) работает через CDN Яндекса, но через CDNvideo и Selectel edge придерживает хвост потокового ответа, и сайты виснут на 5-10 секунд. <i>единичный отчет</i> · <a href="https://ntc.party/t/25574/134">источник</a>
+
+<i>Собрано автоматически.</i>
