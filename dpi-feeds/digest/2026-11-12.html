@@ -1,0 +1,19 @@
+<b>DPI-дайджест · 12.11.2026</b>
+
+<b>Инструменты</b>
+<b>zapret2: user netns</b> - bol-van добавил в nfqws2 запуск в user netns, но подтвердил, что после патча ядра (замечено на 6.18.62) модификация пакетов там не работает: <code>wssize</code> и другие методы с VERDICT_MODIFY дропают пакеты, вне user netns все в порядке. <i>подтверждено в коде</i> · <a href="https://github.com/bol-van/zapret2/issues/349#issuecomment-6796848025">источник</a>
+
+<b>Xray-core: XDNS finalmask</b> - для TCP-резолверов в XDNS finalmask добавлен отдельный worker, после жалоб на неправильно оформленные DNS-запросы через <code>tcp://</code>. <i>подтверждено в коде</i> · <a href="https://github.com/XTLS/Xray-core/commit/14df073">источник</a>
+
+<b>asuswrt-merlin-amneziawg v1.5.30</b> - явный MSS clamp для ответов из туннеля, DNS-сеты переживают перезапуск, живые пробы туннеля в диагностике, предупреждение о MTU · <a href="https://github.com/william-aqn/asuswrt-merlin-amneziawg/commit/51bce14">подробнее</a>
+
+<b>chimera-project</b> - установщик b4 теперь берет последний релиз вместо зашитой версии, исправления переустановки AdGuard Home · <a href="https://gitlab.com/netwalker071778/chimera-project/-/commit/70fc87b6f12bee2b0a6c407d4a841491685de601">подробнее</a>
+
+<b>Обсуждения</b>
+<b>YouTube: зарубежные узлы googlevideo</b> - с 8-10 ноября на Ростелекоме, Tele2, Мегафоне, Уфанете и Невалинке видео с зарубежных узлов <code>*.googlevideo.com</code> (не местных GGC) зависает: TLS проходит, потом данные почти не идут, а местные GGC работают. На ntc.party часть пользователей пробивает их через <code>wssize 1:1</code>, но у некоторых и это перестало работать. <i>несколько отчетов</i> · <a href="https://ntc.party/t/26415/118">источник</a>
+
+<b>Tele2: googlevideo по SNI и лимиту пакетов</b> - в обсуждении Flowseal разобран случай на Tele2 при отключенном QUIC: таймауты и 403 на <code>videoplayback</code> к узлам <code>173.194.x.x</code>, автор связывает это с блокировкой по SNI и лимиту пакетов на соединение. <i>единичный отчет</i> · <a href="https://github.com/Flowseal/zapret-discord-youtube/discussions/18782">источник</a>
+
+<b>ByeDPI: стратегии для YouTube</b> - на ntc.party выложили свежие стратегии на T2 и проводных провайдерах: множественные split (<code>-s1+s -s3+s ... -s30+s</code>) с disorder и раздельные группы по хостам. <i>единичный отчет</i> · <a href="https://ntc.party/t/9057/485">источник</a>
+
+<i>Собрано автоматически.</i>
