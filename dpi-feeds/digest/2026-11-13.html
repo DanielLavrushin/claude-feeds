@@ -1,0 +1,31 @@
+<b>DPI-дайджест · 13.11.2026</b>
+
+<b>Инструменты</b>
+<b>NoDPI v2.4-beta.1</b> - GVCoder09 добавил повтор ClientHello по нескольким новым соединениям (до 6 попыток за 8 с, флаг <code>--no-retry</code>), OOB-desync для ClientHello, встроенный DoH (<code>--doh-server</code>, <code>--no-doh</code>), таймауты и временный пропуск "мертвых" хостов. <i>подтверждено в коде, бета</i> · <a href="https://github.com/GVCoder09/NoDPI/discussions/102">источник</a>
+
+<b>Установщик AmneziaWG v6.3</b> - автор скрипта сообщает: новая установка берет случайный порт из диапазона <code>10000-59999</code>, порт меняется одной командой, а при двух IPv4 на сервере выход можно вынести на второй адрес (<code>--exit-ip</code>). <i>анонс автора</i> · <a href="https://ntc.party/t/22685/38">источник</a>
+
+<b>chimera-project</b> - 5 коммитов: настраиваемый TLS-порт для DoH и Web UI AdGuard Home (в том числе после установки), исправлен DNS-watchdog, напоминание про IPv6 клиента при установке · <a href="https://gitlab.com/netwalker071778/chimera-project/-/commit/c44e1beca1ae020c275e160fbd090012f49fa234">подробнее</a>
+
+<b>Обсуждения</b>
+<b>YouTube: блокировка по IP зарубежных GGC</b> - автор NoDPI воспроизвел: соединения к <code>rr*---sn-*.googlevideo.com</code> на <code>173.194.*</code> и <code>74.125.*</code> отбираются по IP, а не по SNI, примерно в половине из них ServerHello не доходит, фрагментация не помогает, российские GGC не затронуты; на ntc.party то же видят несколько пользователей, а Flowseal завален жалобами на видео. <i>несколько отчетов</i> · <a href="https://github.com/GVCoder09/NoDPI/issues/101#issuecomment-6833620955">источник</a>
+
+<b>Тот же "ковровый" блок на googleapis</b> - на ntc.party сообщают, что <code>*.googleapis.com</code> недоступен, когда его IP попадает в те же пулы адресов, а TLS на эти подсети режется с любым SNI. <i>несколько отчетов</i> · <a href="https://ntc.party/t/26415/161">источник</a>
+
+<b>wssize 1:1 против блокировки googlevideo</b> - на ntc.party несколько пользователей сообщают, что <code>--wssize=1:1</code> в zapret и <code>--lua-desync=wssize:wsize=1:scale=1</code> в zapret2 возвращают загрузку видео; в zapret1 его нужно выносить в отдельный профиль <code>--new</code> без хостлиста, таймауты 5-15% запросов остаются. <i>несколько отчетов</i> · <a href="https://ntc.party/t/26415/146">источник</a>
+
+<b>Стратегии зависят от отпечатка браузера</b> - на ntc.party сообщают, что для отпечатка свежего Firefox подходит примерно вдвое больше стратегий, чем для Chrome, поэтому проверять их стоит через curl-impersonate, а не обычный curl. <i>единичный отчет</i> · <a href="https://ntc.party/t/26415/151">источник</a>
+
+<b>Билайн: блок 443 на Cloudflare</b> - на ntc.party сообщают о блокировке порта 443 на <code>188.114.96.1</code> и <code>188.114.97.1</code> (и <code>.2</code>) для любых сайтов; второй участник допускает, что дело в самом Cloudflare. <i>два отчета</i> · <a href="https://ntc.party/t/4625/1701">источник</a>
+
+<b>МТС: недоступные подсети</b> - на ntc.party сообщают, что у МТС полностью недоступны <code>151.243.0.0/16</code>, <code>151.244.0.0/16</code> и часть <code>191.101.144.0/24</code>. <i>единичный отчет</i> · <a href="https://ntc.party/t/4625/1703">источник</a>
+
+<b>ByeDPI на проводном МТС</b> - на ntc.party сообщают, что стратегии от 06.11 и 09.11 перестали грузить видео, а работает вариант с частыми split <code>-s1+s -s3+s ... -s30+s</code> для googlevideo и disorder для <code>youtube.com</code>. <i>единичный отчет</i> · <a href="https://ntc.party/t/9057/487">источник</a>
+
+<b>zapret2 и белые списки</b> - пользователь сообщает, что его стратегия zapret2 с <code>ip_id=zero</code>, <code>ip_autottl=-1,3,-20</code> и <code>tcp_ts=600000</code> не рвет игровой трафик на Wi-Fi при включенных белых списках, в отличие от zapret1; причина неясна. <i>единичный отчет</i> · <a href="https://github.com/Flowseal/zapret-discord-youtube/discussions/18803">источник</a>
+
+<b>Discord в сборке Flowseal</b> - 12-13.11 в Flowseal несколько независимых жалоб, что Discord перестал работать на всех стратегиях (зависает на запуске), технических деталей нет. <i>несколько отчетов</i> · <a href="https://github.com/Flowseal/zapret-discord-youtube/discussions/18794">источник</a>
+
+<b>nfqws2 и user namespaces</b> - bol-van объясняет, почему nfqws2 не работает или работает плохо внутри user namespace (flatpak, часть систем виртуализации); в zapret2 отдельно сообщают, что обновление ядра 6.18.44 -&gt; 6.18.62 ломает <code>wssize</code> в userns. <i>разъяснение автора</i> · <a href="https://ntc.party/t/61/300">источник</a>
+
+<i>Собрано автоматически.</i>
