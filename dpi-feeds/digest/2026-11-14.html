@@ -1,0 +1,24 @@
+<b>DPI-дайджест · 14.11.2026</b>
+<b>Инструменты</b>
+<b>b4hub v1.7.0</b> - поддержка сетов с Real TCP window (<code>tcp.wssize</code>, требует b4 1.91.0), резолверы <code>dns.upstreams</code> вычищаются как приватное поле · <a href="https://github.com/DanielLavrushin/b4hub/releases/tag/v1.7.0">подробнее</a>
+
+<b>NoDPI v2.4-beta.2</b> - GVCoder09 поднял число параллельных попыток ClientHello до 16: ответ на видеоузлы googlevideo, где часть соединений теряет ServerHello. <i>подтверждено в коде</i> · <a href="https://github.com/GVCoder09/NoDPI/releases/tag/v2.4-beta.2">источник</a>
+
+<b>zapret / zapret2</b> - bol-van исправил граничные случаи контрольных сумм в nfqws и nfqws2: нулевая UDP checksum теперь записывается как <code>0xFFFF</code>. <i>подтверждено в коде</i> · <a href="https://github.com/bol-van/zapret2/commit/466b7a6">источник</a>
+
+<b>Обсуждения</b>
+<b>YouTube: зарубежные GGC по IPv4</b> - на ntc.party несколько участников сообщают, что часть подсетей googlevideo не отвечает ни на TLS, ни на QUIC при проходящем SYN-ACK; автор NoDPI ранее описал выборку по IP с потерей ServerHello примерно в половине соединений, фрагментация не помогает. <i>несколько отчетов</i> · <a href="https://ntc.party/t/26415/180">источник</a>
+
+<b>YouTube: провайдерские GGC ожили</b> - на ntc.party двое сообщают, что GGC Мегафона снова отдают видео, работает split на midsld без wssize. <i>несколько отчетов</i> · <a href="https://ntc.party/t/26415/179">источник</a>
+
+<b>Discord с 13 ноября</b> - в zapret-discord-youtube от Flowseal 7+ сообщений, что Discord не подключается ни на одной стратегии, среди провайдеров Ростелеком и Планета. <i>несколько отчетов</i> · <a href="https://github.com/Flowseal/zapret-discord-youtube/issues/18820">источник</a>
+
+<b>Ростелеком ЦФО: блок целых AS</b> - на ntc.party сообщают, что недоступны AS Cloudflare, Akamai, Amazon, Microsoft и Valve, в Wireshark это выглядит как DROP по IP. <i>единичный отчет</i> · <a href="https://ntc.party/t/4625/1707">источник</a>
+
+<b>Фильтрация у российских хостеров</b> - ValdikSS обновил таблицу проверок VPS: на ряде площадок <code>youtube.com</code> недоступен по IPv4, но открывается по IPv6. <i>измерено</i> · <a href="https://ntc.party/t/4867/25">источник</a>
+
+<b>UDP (не QUIC) на Дом.ру</b> - на ntc.party сообщают, что с конца лета стратегии для игрового UDP перестали работать при любых fake-пейлоадах, repeats и cutoff (AS16509 и др.). <i>единичный отчет</i> · <a href="https://ntc.party/t/726/9900">источник</a>
+
+<b>zapret2 на OpenWrt для YouTube</b> - рабочая схема: <code>tcpseg:pos=0,1:ip_id=rnd</code> для TLS и QUIC fake с <code>repeats=11</code>, входящая NFQUEUE отключена из-за падений ядра. <i>единичный отчет</i> · <a href="https://github.com/bol-van/zapret2/discussions/351">источник</a>
+
+<i>Собрано автоматически.</i>
