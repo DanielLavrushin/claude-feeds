@@ -1,0 +1,33 @@
+<b>DPI-дайджест · 15.11.2026</b>
+
+<b>Инструменты</b>
+<b>B4 v1.91.0</b> - Real TCP window (wssize) по мотивам zapret2, до восьми DNS-резолверов на сет, Split Position и режим In Order для Disorder, импорт zapret/byedpi-конфигов в сеты через MCP · <a href="https://github.com/DanielLavrushin/b4/releases/tag/v1.91.0">подробнее</a>
+
+<b>b4hub v1.8.0</b> - сеты с новыми опциями Disorder из b4 1.91.0 проходят через хаб, исправлены имена fake-пейлоадов Google и DuckDuckGo · <a href="https://github.com/DanielLavrushin/b4hub/releases/tag/v1.8.0">подробнее</a>
+
+<b>Xray-core: стартовые паддинги XMC finalmask</b> - у стартовых <code>paddings</code> теперь настраиваются направление, длина и задержка, то есть форму первых пакетов маскировки можно менять под сеть. <i>подтверждено в коде</i> · <a href="https://github.com/XTLS/Xray-core/commit/5d17b87">источник</a>
+
+<b>sing-box: Reality ClientHello ближе к браузеру</b> - SagerNet перестал вырезать <code>X25519MLKEM768</code> из ClientHello Reality, убрал неработающую подмену ALPN, обновил uTLS до 1.9.0-alpha.1 и исключил устаревшие Edge 85 и iOS 14 из random-отпечатка. <i>подтверждено в коде</i> · <a href="https://github.com/SagerNet/sing-box/commit/39501357">источник</a>
+
+<b>chimera-project</b> - 7 коммитов: каталог из 48 пресетов маршрутизации поверх geosite runetfreedom, поддержка <code>ext:файл.dat:категория</code> в правилах Xray, режим каскада AWG «весь трафик через exit», dual-stack для nginx-фронтов панелей · <a href="https://gitlab.com/netwalker071778/chimera-project/-/commit/38df7b2b46f90a74bf8e675e06dea473631701ee">подробнее</a>
+
+<b>Обсуждения</b>
+<b>YouTube: зарубежные GGC пробиваются только с wssize</b> - на ntc.party сообщают, что без wssize зарубежные узлы googlevideo доступны примерно в половине попыток и по TCP, и по UDP, а с wssize стабильно; один участник приводит рабочий вариант <code>--lua-desync=wssize:wsize=1:scale=1:forced_cutoff=tls_server_hello</code>. <i>несколько отчетов</i> · <a href="https://ntc.party/t/26415/196">источник</a>
+
+<b>Провайдерские GGC закрыты извне по IPv4</b> - на ntc.party двое сообщают, что кэш Билайна, раньше доступный с зарубежных VPS, теперь не отвечает по IPv4, а по IPv6 работает. <i>несколько отчетов</i> · <a href="https://ntc.party/t/26415/198">источник</a>
+
+<b>Discord: поломка продолжается</b> - в zapret-discord-youtube от Flowseal уже около 10 независимых сообщений, что Discord зависает на обновлении на всех ALT-стратегиях с 13-14 ноября, у части пользователей отвалились и голосовые звонки. <i>несколько отчетов</i> · <a href="https://github.com/Flowseal/zapret-discord-youtube/issues/18876">источник</a>
+
+<b>Временный бан порта VPS при выгрузке</b> - на ntc.party сообщают, что на российском хостинге отдельный порт VPS уходит во временный бан именно при выгрузке трафика (загрузка файла, upload-тест), скачивание не триггерит, с мобильной сети воспроизвести не удалось. <i>единичный отчет</i> · <a href="https://ntc.party/t/26633/1">источник</a>
+
+<b>Xray: часть uTLS-отпечатков блокируется</b> - в Xray-core сообщают, что ТСПУ в ряде случаев рвет соединения с отпечатками <code>ios</code>, <code>android</code> и <code>chrome-133</code>, и просят взвешенный выбор отпечатков со списком исключений; тест на двух IP запущен, результатов пока нет. <i>единичный отчет</i> · <a href="https://github.com/XTLS/Xray-core/issues/7405">источник</a>
+
+<b>bol-van о fake для QUIC и UDP</b> - на ntc.party bol-van пояснил, что для QUIC простые фейки не нужны, потому что сервер сам отбрасывает невалидный пакет, а для UDP из fooling применимы только <code>ttl</code> и <code>badsum</code>. <i>подтверждено автором</i> · <a href="https://ntc.party/t/726/9915">источник</a>
+
+<b>youtubeUnblock: YouTube деградировал с 10 ноября</b> - в youtubeUnblock сообщают о вечном спиннере на двух-трех провайдерах при версии 1.3.1, одному помогла фрагментация <code>frag=tcp</code> с <code>seg2delay=10</code> без fake SNI. <i>несколько отчетов</i> · <a href="https://github.com/Waujito/youtubeUnblock/issues/387">источник</a>
+
+<b>Почасовой обрыв translate-pe</b> - на ntc.party сообщают, что у мелкого московского провайдера адрес <code>172.217.114.4</code> (<code>translate-pe.googleapis.com</code>) пропадает примерно на 5 минут каждый час в X:22. <i>единичный отчет</i> · <a href="https://ntc.party/t/4625/1709">источник</a>
+
+<b>ML-фильтр РКН: что известно</b> - разбор на Habr: по паспорту программы система оценивает соединения по косвенным признакам (размеры и тайминги пакетов, длительность сессий, соотношение трафика), но реализация, точность и место в цепочке ТСПУ не раскрыты. <i>анализ документа, технических подтверждений нет</i> · <a href="https://habr.com/ru/articles/1107828/">источник</a>
+
+<i>Собрано автоматически.</i>
