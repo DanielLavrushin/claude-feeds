@@ -1,0 +1,31 @@
+<b>DPI-дайджест · 16.11.2026</b>
+
+<b>Инструменты</b>
+<b>B4 v1.91.1</b> - Real TCP window (wssize) теперь может удалять опцию Window Scale из SYN вместо понижения, импорт zapret <code>--wssize</code> без scale переводится в этот режим; фиксы DNS в TUN на MikroTik и зависаний соединений к адресам proxy-сетов · <a href="https://github.com/DanielLavrushin/b4/releases/tag/v1.91.1">подробнее</a>
+
+<b>b4hub v1.9.0</b> - сеты с удалением Window Scale сохраняются через хаб и помечаются как требующие B4 1.91.1 · <a href="https://github.com/DanielLavrushin/b4hub/releases/tag/v1.9.0">подробнее</a>
+
+<b>amneziawg-go</b> - поддержка параметров AWG 3.1 в интеграции с Outline SDK и фикс проверки изменений S4 в очереди шифрования. <i>подтверждено в коде</i> · <a href="https://github.com/amnezia-vpn/amneziawg-go/commit/5a5db05">источник</a>
+
+<b>chimera-project</b> - в мастер кастомных outbound добавлен freedom с собственной стратегией резолва (принудительный IPv4 для exit-нод с нерабочим IPv6) · <a href="https://gitlab.com/netwalker071778/chimera-project/-/commit/b25740c990505d9ebe74943a68f8f4ab16756969">подробнее</a>
+
+<b>Обсуждения</b>
+<b>YouTube: ТСПУ режет ответ сервера на зарубежных GGC</b> - на ntc.party сообщают, что на пути к зарубежным <code>*.googlevideo.com</code> DPI теперь фильтрует ServerHello (или любой TLS по IP Google), и проходит только вариант с <code>wssize 1:1</code>, при котором ServerHello приходит кусками по 2 байта; bol-van уточняет, что для TLS 1.3 это помогает лишь если DPI ловит сам факт TLS, а скорость остается низкой. <i>несколько отчетов</i> · <a href="https://ntc.party/t/26415/217">источник</a>
+
+<b>Провайдерские GGC и зарубежные - разные проблемы</b> - на ntc.party сообщают, что до кэшей провайдера по-прежнему пробивают старые стратегии (например <code>--dpi-desync=hostfakesplit</code>), а ломается воспроизведение, когда видео нет в местном кэше и YouTube уводит на зарубежный узел; часть пользователей блокирует проблемные локальные GGC через hosts. <i>несколько отчетов</i> · <a href="https://ntc.party/t/26415/240">источник</a>
+
+<b>Волна поломок видео YouTube с ~8-10 ноября</b> - превью и страница грузятся, плеер висит: жалобы одновременно в Flowseal (около 40 issues про YouTube за неделю), youtubeUnblock, NoDPI и на ntc.party, провайдеры Дом.ру, Билайн, Уфанет, Ростелеком, ТТК, Сибирские сети; автор NoDPI допускает перевод проекта в архив. <i>несколько отчетов</i> · <a href="https://github.com/Waujito/youtubeUnblock/issues/386">источник</a>
+
+<b>Мобильные сети: вторая часть ClientHello не доходит</b> - на ntc.party сообщают, что на части мобильных операторов к зарубежным VPS первый сегмент ClientHello доходит, а второй теряется (около 1378 байт проходит, остальное нет); связывают с большими ClientHello с post-quantum ключами, советуют фейки в пределах MTU. <i>несколько отчетов</i> · <a href="https://ntc.party/t/26426/23">источник</a>
+
+<b>Hetzner и Scaleway: TCP есть, TLS убивают</b> - на net4people замер из Татарстана (ER-Telecom): TCP connect к Hetzner проходит, но TLS handshake обрывается и HTTPS отдает 0 байт при любом размере, тогда как Vultr, Linode и Cloudflare доступны. <i>единичный отчет</i> · <a href="https://github.com/net4people/bbs/issues/671#issuecomment-6893004368">источник</a>
+
+<b>Проверка 435 хостингов</b> - автор на Habr пишет, что из России режут целые сети хостеров (Hetzner, OVH, DigitalOcean и др.): соединение замерзает на первых пакетах. <i>измерено</i> · <a href="https://habr.com/ru/articles/1104904/">источник</a>
+
+<b>Блокировки по IP и AS</b> - на ntc.party сообщают о недоступности целых AS на Ростелекоме ЦФО (Cloudflare, Akamai, Amazon, Microsoft, Valve) и о повторной блокировке 443 на <code>188.114.96.1</code> и <code>188.114.97.1</code> у Билайна. <i>несколько отчетов</i> · <a href="https://ntc.party/t/4625/1707">источник</a>
+
+<b>play.googleapis.com</b> - на ntc.party сообщают о блокировке <code>play.googleapis.com</code>, из-за чего не скачиваются приложения из Google Play. <i>единичный отчет</i> · <a href="https://ntc.party/t/4625/1711">источник</a>
+
+<b>NextDNS разблокирован</b> - на ntc.party сообщают, что <code>my.nextdns.io</code> и <code>*.dns.nextdns.io</code> снова доступны. <i>несколько отчетов</i> · <a href="https://ntc.party/t/23007/256">источник</a>
+
+<i>Собрано автоматически.</i>
