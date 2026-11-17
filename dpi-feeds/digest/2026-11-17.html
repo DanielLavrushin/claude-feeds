@@ -1,0 +1,25 @@
+<b>DPI-дайджест · 17.11.2026</b>
+
+<b>Инструменты</b>
+<b>AmneziaWG-go v3.1</b> - тег <code>v3.1.20261116</code>: в README описаны RandomTrailers (случайный хвост случайной длины у пакетов, включается на обеих сторонах) и DisableCookies (узел не шлет cookie reply, которые WireGuard выдает при active probing), плюс фиксы валидации Jmin/Jmax и тегов I1-I5. <i>подтверждено в коде</i> · <a href="https://github.com/amnezia-vpn/amneziawg-go/commit/876c243">источник</a>
+
+<b>Xray-core: XMC finalmask</b> - переход на нативный padding фреймов (несовместимо со старыми версиями), параметр <code>delay</code> теперь принимает диапазон. <i>подтверждено в коде</i> · <a href="https://github.com/XTLS/Xray-core/commit/f781c68">источник</a>
+
+<b>sing-box 1.15 (dev)</b> - новое действие маршрутизации <code>tcp_prefix</code> добавляет заданные байты в начало каждого TCP-соединения; также ECH-конфиг для QUIC теперь берется из DNS и добавлена поддержка MASQUE. <i>подтверждено в коде</i> · <a href="https://github.com/SagerNet/sing-box/commit/8581fdb5">источник</a>
+
+<b>chimera-project</b> - 6 коммитов: починена перезапись REALITY-сокета vhost-ом сайта-маски, фиксы Telemt и HSTS на сайтах-заглушках · <a href="https://gitlab.com/netwalker071778/chimera-project/-/commit/464872d7c7ff88f8c7f32ed635b8edd6f06bad0c">подробнее</a>
+
+<b>Обсуждения</b>
+<b>YouTube разбирают по частям: замеры в одной сети</b> - на Habr автор клиента обхода за день замеров в одной домашней сети увидел, что ClientHello приложения YouTube (около 1,75 КБ) уходит двумя TCP-сегментами и SNI во втором ускользает от одиночной нарезки (помогла нарезка по всей длине рукопожатия), кэши <code>*.googlevideo.com</code> стоят примерно в 6 хопах, поэтому окно TTL для fake очень узкое, а QUIC к кэшам видео обрывается после 40 байт. <i>измерено (одна сеть)</i> · <a href="https://habr.com/ru/articles/1108386/">источник</a>
+
+<b>Разные правила для разных GGC</b> - на ntc.party несколько участников сообщают, что зарубежные узлы <code>*.googlevideo.com</code> пробиваются только с wssize, а местные - прежними стратегиями; без wssize рукопожатие проходит, но на <code>POST /videoplayback</code> сервер отвечает только ACK и данные не идут. <i>несколько отчетов</i> · <a href="https://ntc.party/t/26415/262">источник</a>
+
+<b>Волна поломок YouTube</b> - в трекерах Flowseal/zapret-discord-youtube, Waujito/youtubeUnblock и xvzc/SpoofDPI за сутки около 10 отчетов с одной картиной: популярные ролики грузятся, остальные зависают на спиннере, начиная примерно с 10-16.11; у одного пользователя помог переход на шифрованный DNS, так как провайдер подменял ответы. <i>несколько отчетов</i> · <a href="https://github.com/Waujito/youtubeUnblock/issues/377">источник</a>
+
+<b>QUIC к googlevideo - лотерея</b> - на ntc.party сообщают, что QUIC проходит к одним узлам <code>rr*---sn-*.googlevideo.com</code> и не проходит к соседним с той же трассировкой, а IP-фрагментация QUIC Initial в zapret2 не помогла. <i>единичный отчет</i> · <a href="https://ntc.party/t/26415/270">источник</a>
+
+<b>HTTP-прокси без шифрования не режутся</b> - на ntc.party разобрали браузерное расширение для YouTube: это обычные HTTP-прокси, и через них открываются заблокированные сайты, хотя ТСПУ видит имя домена; заблокированы лишь отдельные IP. <i>несколько отчетов</i> · <a href="https://ntc.party/t/26652/8">источник</a>
+
+<b>Smart TV отвалился</b> - в youtubeUnblock двое пользователей Ростелекома (Москва) сообщают, что YouTube на Samsung Smart TV не работает около недели при тех же настройках, с которыми ПК по TCP и телефон работают. <i>несколько отчетов</i> · <a href="https://github.com/Waujito/youtubeUnblock/issues/387#issuecomment-6927818098">источник</a>
+
+<i>Собрано автоматически.</i>
