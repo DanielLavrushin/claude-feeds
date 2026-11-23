@@ -1,0 +1,2 @@
+gh: Server Error (HTTP 502)
+releases failed: DanielLavrushin/asuswrt-merlin-xrayui
