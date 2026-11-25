@@ -1,0 +1,35 @@
+<b>DPI-дайджест · 25.11.2026</b>
+
+<b>Инструменты</b>
+<b>zapret2 v1.0.8</b> - bol-van выпустил версию с исправлениями: поиск DPI-редиректа по хосту без порта и сравнением IP, пересчет L3-длин для фрагментов, запрет нулевой UDP checksum, починка <code>stopif</code> в zapret-auto. <i>подтверждено в коде</i> · <a href="https://github.com/bol-van/zapret2/tree/v1.0.8">источник</a>
+
+<b>SpoofDPI: fake через raw IP сокеты</b> - xvzc перевел отправку fake-пакетов на raw IP сокеты на Linux, macOS и FreeBSD, без шлюза и с поддержкой PPP; серверам, маршрут к которым идет через VPN, fake больше не отправляются. <i>подтверждено в коде</i> · <a href="https://github.com/xvzc/SpoofDPI/commit/b9b0cc2">источник</a>
+
+<b>Xray: дроп UDP/443 в VLESS</b> - улучшено отбрасывание QUIC (<code>UDP/443</code>) в VLESS outbound с ранним отказом, чтобы клиент быстрее уходил на TCP. <i>подтверждено в коде</i> · <a href="https://github.com/XTLS/Xray-core/commit/5d8b202">источник</a>
+
+<b>Xray: XDNS finalmask alphabet</b> - для DNS-туннеля через <code>UDP/53</code> добавлен параметр <code>alphabet</code> в <code>domains</code>, сделано под фильтрацию в Иране. <i>подтверждено в коде</i> · <a href="https://github.com/XTLS/Xray-core/commit/15b2499">источник</a>
+
+<b>sing-box: tcp_prefix</b> - в dev-ветке появилась route-опция <code>tcp_prefix</code>, которая дописывает произвольные байты в начало каждого TCP-соединения, и фикс порядка: префикс теперь идет до TLS fragment и spoof. <i>подтверждено в коде</i> · <a href="https://github.com/SagerNet/sing-box/commit/40d87d2f">источник</a>
+
+<b>chimera-project</b> - синхронизация AWG-части с апстрим-установщиком v6.3.x (коллизии длин S1-S4 и др.), подготовка к Ubuntu 26.04, авторековери UFW в rkn-guard · <a href="https://gitlab.com/netwalker071778/chimera-project/-/commit/8e80ab53c77bbe0343853ccf6cf232d5215cd170">подробнее</a>
+
+<b>Обсуждения</b>
+<b>Точечные блоки VPS по IP</b> - на ntc.party сообщают о глухом бане отдельных self-hosted серверов с AmneziaWG 3.1 при живых соседних IP и о блэкхоле целой <code>/27</code> вместе с ICMP; bol-van допускает корреляцию входного и выходного IP. <i>несколько отчетов</i> · <a href="https://ntc.party/t/26706/80">источник</a>
+
+<b>Разные IP для входа и выхода VPN</b> - на Habr разобрали, как развести вход и выход AmneziaWG вторым IPv4 через SNAT, чтобы при бане адреса выхода менять только его, не трогая клиентов. <i>единичный отчет</i> · <a href="https://habr.com/ru/articles/1111468/">источник</a>
+
+<b>UDP пока не шейпят</b> - bol-van на ntc.party считает, что шейпинга UDP на ТСПУ пока нет и наблюдаемые потери связаны с провайдерами; другой участник не видит замедления vless h3 на МТС, T2, Билайне и Ростелекоме. <i>несколько отчетов</i> · <a href="https://ntc.party/t/26706/79">источник</a>
+
+<b>YouTube: не грузится видео с googlevideo</b> - в Flowseal/zapret-discord-youtube за сутки около 6 сообщений о том, что страница открывается, а видео с <code>*.googlevideo.com</code> не идет (Дом.ру, Ростелеком); один пользователь отмечает, что тот же узел по IP без SNI отвечает сразу. <i>несколько отчетов</i> · <a href="https://github.com/Flowseal/zapret-discord-youtube/discussions/19173">источник</a>
+
+<b>Steam и подсети Akamai</b> - в Flowseal/zapret-discord-youtube сообщают, что с 19.11 у многих не открываются магазин и сообщество Steam на мобильных и домашних сетях, предположительно из-за фильтрации подсетей Akamai. <i>несколько отчетов</i> · <a href="https://github.com/Flowseal/zapret-discord-youtube/issues/19177">источник</a>
+
+<b>Discord CDN</b> - там же несколько сообщений о незагружающихся картинках и файлах Discord при рабочих стратегиях для остального. <i>несколько отчетов</i> · <a href="https://github.com/Flowseal/zapret-discord-youtube/discussions/19190">источник</a>
+
+<b>Побочный урон от блокировки post-quantum ClientHello</b> - на ntc.party сообщают, что на проводном T2 Москва режутся легальные зарубежные ресурсы с Kyber/ML-KEM в ClientHello; bol-van напоминает, что fake не должен приниматься сервером, иначе ломается целостность TLS. <i>единичный отчет</i> · <a href="https://ntc.party/t/726/9956">источник</a>
+
+<b>nextcloud.com</b> - на ntc.party сообщают о блокировке по TCP и только по IPv4 на Ростелекоме, МГТС и T2 Мобайл в Москве. <i>единичный отчет</i> · <a href="https://ntc.party/t/4625/1730">источник</a>
+
+<b>CircumVolve (CCS 2026)</b> - на gfw.report опубликована работа об автоматическом поиске стратегий обхода цензуры с помощью LLM, включая стратегии для Ирана. <i>измерено</i> · <a href="https://gfw.report/publications/ccs26/en/">источник</a>
+
+<i>Собрано автоматически.</i>
