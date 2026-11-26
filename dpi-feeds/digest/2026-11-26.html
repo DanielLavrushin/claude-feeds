@@ -1,0 +1,33 @@
+<b>DPI-дайджест · 26.11.2026</b>
+
+<b>Инструменты</b>
+<b>zapret2 v1.0.8</b> - bol-van исправил пересчет <code>ip_len</code>/<code>ip6_len</code> во фрагментированных пакетах с <code>frag_off</code> и редкие ошибки L4 checksum (для UDP теперь избегается нулевая сумма), плюс предупреждение о недостижимых профилях после профиля без фильтра. <i>подтверждено в коде</i> · <a href="https://github.com/bol-van/zapret2/releases/tag/v1.0.8">источник</a>
+
+<b>Xray-core XDRIVE</b> - транспорт, который гоняет поток через файлы в облачном хранилище (Google Drive, S3, URL-шаблон), синхронизирован в основную ветку, релиз анонсирован на 27.11; клиент сам включает VLESS Mux 128. <i>подтверждено в коде</i> · <a href="https://github.com/XTLS/Xray-core/issues/7208">источник</a>
+
+<b>sing-box (testing)</b> - добавлена route-опция <code>tcp_prefix</code> (произвольные байты в начало каждого TCP-соединения), исправлен ее порядок относительно <code>tls_fragment</code> и <code>tls_spoof</code>; в той же ветке появилась поддержка MASQUE. <i>подтверждено в коде</i> · <a href="https://github.com/SagerNet/sing-box/commit/2d568e091c22846eed895f10657406589392bc5b">источник</a>
+
+<b>Установщик AmneziaWG v6.3.10</b> - новая команда <code>manage block-ru</code> закрывает клиентам VPN выход на российские IPv4, чтобы адрес зарубежного сервера не попадал в логи российских сайтов и приложений · <a href="https://ntc.party/t/22685/43">подробнее</a>
+
+<b>chimera-project</b> - 2 коммита: rkn-guard больше не дропает TURN-реле ВК для qWDTT, обновление dpi-detector качается через лестницу зеркал · <a href="https://gitlab.com/netwalker071778/chimera-project/-/commit/e429eb52c1442ded1e2e0f94dd103c860172db9d">подробнее</a>
+
+<b>Обсуждения</b>
+<b>Cloudflare и другие зарубежные сайты на Ростелекоме</b> - на ntc.party сообщают, что с ночи 25.11 перестали работать белые SNI для Cloudflare: <code>x.com</code>, <code>nakarte.me</code>, флибуста висят, ответы до ~4 КБ проходят, дальше шейп или RST; blockcheck находит стратегии, но они не помогают. <i>несколько отчетов</i> · <a href="https://ntc.party/t/726/9964">источник</a>
+
+<b>Proton и прочие VPN</b> - на ntc.party сообщают об отвале Proton почти на всех локациях и о том, что один из сервисов перестал работать с любым SNI, началось около 24.11. <i>единичный отчет</i> · <a href="https://ntc.party/t/17013/1497">источник</a>
+
+<b>Официальный клиент WARP</b> - в issues Flowseal (4 отчета, два с Мегафона в Москве) и на ntc.party пишут, что WARP перестал подключаться и обрывается на 26%; при этом из Петербурга есть обратный отчет, что WARP стал подключаться даже без обхода. <i>несколько отчетов</i> · <a href="https://github.com/Flowseal/zapret-discord-youtube/issues/19217">источник</a>
+
+<b>fandom.com</b> - в issues Flowseal 4 пользователя сообщают, что все сайты на <code>fandom.com</code> перестали открываться, добавление доменов в листы и hosts не помогает, что похоже на блок не только по SNI. <i>несколько отчетов</i> · <a href="https://github.com/Flowseal/zapret-discord-youtube/issues/19192">источник</a>
+
+<b>ru-board и fastpic</b> - на ntc.party сообщают, что <code>forum.ru-board.com</code> не отвечает ни с каким SNI, а стратегия с <code>wssize 1:6</code> продержалась меньше недели; blockcheck рабочих вариантов не нашел. <i>единичный отчет</i> · <a href="https://ntc.party/t/23814/127">источник</a>
+
+<b>Перехват codeload.github.com</b> - в коммите chimera-project описан отчет, что на российских серверах ТСПУ перехватывает <code>codeload.github.com</code> с подменой сертификата на самоподписанный, тогда как <code>api.github.com</code> работает. <i>единичный отчет</i> · <a href="https://gitlab.com/netwalker071778/chimera-project/-/commit/67b792c8c36d67afd9cbcccdb802d721d2123c5e">источник</a>
+
+<b>YouTube и googlevideo</b> - на ntc.party замечают, что редирект GGC прыгает между кластерами (провайдерский, Москва, Петербург) и на Ростелекоме видео начало принимать fake с TTL 2; в byedpi сообщают, что старая рабочая строка для <code>googlevideo.com</code> теперь грузит видео примерно в 1 из 4 случаев. <i>единичный отчет</i> · <a href="https://ntc.party/t/26415/345">источник</a>
+
+<b>Как приложения выдают VPN</b> - на ntc.party bol-van разбирает проверки VPN в 2ГИС (<code>hasTransport</code>, поиск <code>tun0</code> в SDK AppsFlyer) и объясняет, что сплит по направлениям ловится запросами к RU и не-RU серверам, а per-app сплит не спасает, потому что интерфейсы в Android общие. <i>единичный отчет</i> · <a href="https://ntc.party/t/26706/100">источник</a>
+
+<b>DPI в абонентских ONU China Unicom</b> - на net4people опубликован разбор прошивки ZTE F7610U-C: скрытый плагин сбора данных с базой из 743 правил извлечения и второй, независимый payload-DPI стек Surfilter с полностью расшифрованной базой правил; авторы показывают, почему режим моста не спасает. <i>измерено</i> · <a href="https://github.com/net4people/bbs/issues/691">источник</a>
+
+<i>Собрано автоматически.</i>
