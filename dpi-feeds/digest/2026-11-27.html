@@ -1,0 +1,15 @@
+<b>DPI-дайджест · 27.11.2026</b>
+
+<b>Инструменты</b>
+<b>Flowseal: переход на zapret2</b> - zapret-discord-youtube переведен с winws на <code>winws2</code> с Lua-стратегиями: для TLS теперь <code>multisplit</code> с <code>seqovl</code> и паттерном фейкового ClientHello, для QUIC и игр - <code>fake</code> с повторами, исключения вынесены в общие шаблоны <code>--template</code>/<code>--import</code>. <i>подтверждено в коде</i> · <a href="https://github.com/Flowseal/zapret-discord-youtube/commit/cdaf1b6">источник</a>
+
+<b>chimera-project</b> - режим kernel-relay для AmneziaWG: один туннель плюс UDP-релей, который открывает каждый поток DNS-датаграммой, против двусторонней отсечки UDP примерно после 25 пакетов · <a href="https://gitlab.com/netwalker071778/chimera-project/-/commit/ba1bb9f8454032e7cce04d5874c6f3c1359f6ffa">подробнее</a>
+
+<b>Обсуждения</b>
+<b>Reality и "стандартный" SNI</b> - на ntc.party сообщают о блокировке IP VPS с VLESS+Reality за несколько часов у трех провайдеров; bol-van поясняет, что популярный SNI, а особенно российский домен, выдает сервер: handshake забирается у реального сайта в РФ и трафик попадает в корреляцию. <i>единичный отчет</i> · <a href="https://ntc.party/t/26706/115">источник</a>
+
+<b>WARP: блокировка по endpoint</b> - на ntc.party сообщают, что WARP перестали резать по SNI и блокируют IP endpoint'ов; помогает подбор рабочего адреса через <code>warp-cli tunnel endpoint set</code>. <i>единичный отчет</i> · <a href="https://ntc.party/t/15292/1266">источник</a>
+
+<b>Откат новых фильтров</b> - на ntc.party двое пользователей сообщают, что в ночь на 26.11 часть недавно добавленных фильтров откатили: снова открываются ранее отвалившиеся сайты, пропали подвисания YouTube в начале и середине роликов. <i>несколько отчетов</i> · <a href="https://ntc.party/t/726/9969">источник</a>
+
+<i>Собрано автоматически.</i>
