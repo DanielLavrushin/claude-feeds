@@ -1,0 +1,19 @@
+<b>DPI-дайджест · 28.11.2026</b>
+
+<b>Инструменты</b>
+<b>Flowseal zapret-discord-youtube 2.0.0-rc</b> - стратегии переписаны: для YouTube и Discord Media фейк теперь собирается из живого ClientHello (<code>tls_client_hello_clone</code> с заменой SNI на <code>www.google.com</code>) плюс <code>fake_default_tls</code> с <code>tls_mod=rnd,dupsid</code> и <code>ip_id=zero</code>, для QUIC - новые блобы <code>quic_google2</code>/<code>quic_google3</code> и <code>udplen</code> до 1200-1300 байт, добавлена ALT14; смена статичных блобов на клоны настоящего ClientHello намекает, что старые фейки ТСПУ стал отличать. <i>подтверждено в коде, вывод - предположение</i> · <a href="https://github.com/Flowseal/zapret-discord-youtube/commit/f6e7223">источник</a>
+
+<b>SpoofDPI: fake для IPv6</b> - в режимах HTTP и SOCKS5 fake-пакеты теперь уходят и на IPv6-серверы, без flow label (0), чтобы фейк выглядел частью того же потока для сетей, различающих IPv6-потоки по метке; заодно убрано автоопределение VPN. <i>подтверждено в коде</i> · <a href="https://github.com/xvzc/SpoofDPI/commit/75bfc63">источник</a>
+
+<b>Xray-core XDNS finalmask</b> - сервер теперь проверяет длину фрагментированного upload. <i>подтверждено в коде</i> · <a href="https://github.com/XTLS/Xray-core/commit/ded8443">источник</a>
+
+<b>chimera-project</b> - фикс AWG kernel-relay: восстановление после перезагрузки больше не сбрасывает выбранное действие при сбое в rollback · <a href="https://gitlab.com/netwalker071778/chimera-project/-/commit/a4197360535061ceeccb36df27a9bd57468d2285">подробнее</a>
+
+<b>Обсуждения</b>
+<b>Полная блокировка VPS: разнос входа и выхода</b> - в теме о бане VPS на ТСПУ bol-van сомневается, что разнос входного и выходного IP в одной подсети надолго поможет: ТСПУ может начать связывать адреса по подсети или хостеру, поэтому выход лучше брать у другого хостера. <i>гипотеза, не измерено</i> · <a href="https://ntc.party/t/26706/120">источник</a>
+
+<b>Telegram: блокировка по отдельным IP</b> - на ntc.party сообщают, что недоступность Telegram зависит от конкретного адреса (упоминается <code>149.154.167.220</code> у Дом.ру), у одного пользователя доступ вернулся через 21 день, у другого веб все еще недоступен. <i>несколько отчетов, расходятся</i> · <a href="https://ntc.party/t/11532/573">источник</a>
+
+<b>Twitch грузит только каркас страницы</b> - в трекере Flowseal три отчета, что Twitch не загружает контент при работающем запрете (МТС Якутск, Сибирский бит Новосибирск), смена стратегий и списков не помогает. <i>несколько отчетов</i> · <a href="https://github.com/Flowseal/zapret-discord-youtube/issues/19261">источник</a>
+
+<i>Собрано автоматически.</i>
